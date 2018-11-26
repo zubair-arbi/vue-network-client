@@ -3,7 +3,7 @@
     <a class="header-logo" href="/">
       <img src="./assets/logo.png">
     </a>
-    <div><a href="/#/about">Read more about this site.</a></div>
+    <div><router-link class="nav-link" to="/about">Read more about this site.</router-link></div>
 
     <router-view/>
 

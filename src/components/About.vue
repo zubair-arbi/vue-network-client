@@ -25,7 +25,7 @@ export default {
     height: 400px;
   }
 
-  .card { /* Adding some air under the tasks */
+  .card {
     font-size: larger;
     margin-bottom: 25px;
     padding: 50px 0;

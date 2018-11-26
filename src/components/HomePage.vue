@@ -12,7 +12,7 @@
           <div class="card" v-for="system in systems"> <!-- Loop through the systems array, if status is 0 (to do) then we'll show it. -->
             <div class="card-content">
               <div class="content">
-                <span class="system-title">{{ system.name }}</span>
+                <h5 class="system-title" @click="systemDetail(system.id)" >{{ system.name }}</h5>
                 <div>
                   <b>Areas:</b>
                   <span v-for="area in system.areas">{{ area.address }}, </span>
@@ -79,6 +79,9 @@ export default {
           password: 'admin'
         }
       }).then(response => { this.systems = response.data })
+    },
+    systemDetail (systemId) {
+      this.$router.push({ name: 'systemDetail', params: { systemId: systemId } })
     }
   }
 }
@@ -93,6 +96,12 @@ export default {
     font-weight: bold;
     color: coral;
   }
+  .system-title:hover {
+    COLOR: chocolate;
+    TEXT-DECORATION: underline;
+    cursor: pointer;
+  }
+
   .card { /* Adding some air under the tasks */
     margin-bottom: 25px;
   }

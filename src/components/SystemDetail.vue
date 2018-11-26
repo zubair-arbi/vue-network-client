@@ -14,15 +14,22 @@
               <div class="content">
                 <div>
                   <h5>Areas:</h5>
-                  <ol>
-                    <li class="areas-list" v-for="area in system.areas">{{ area.address }}</li>
+                  <ol id="areas-list">
+                    <li class="areas-list" v-for="area in system.areas" :key="area.id">
+                      {{ area.address }}
+
+                      <button class="button is-small" click="removeItem(index)">
+                        <b-icon icon="trash"></b-icon>
+                        <span>Remove system from this area</span>
+                      </button>
+                    </li>
                   </ol>
                 </div>
                 <hr>
                 <div>
                   <h5>Connected Systems:</h5>
                   <ol>
-                    <li class="systems-list" v-for="connected_system in system.connected_systems">
+                    <li class="systems-list" v-for="connected_system in system.connected_systems" :key="connected_system.id">
                       {{ connected_system.name }}
                     </li>
                   </ol>

@@ -28,9 +28,8 @@
                     <li class="areas-list" v-for="area in system.areas" :key="area.id">
                       {{ area.address }}
 
-                      <button class="button is-small" click="removeItem(index)">
+                      <button class="button is-small" @click="removeArea(area.address)" title="Remove current system from this area">
                         <b-icon icon="trash"></b-icon>
-                        <span>Remove system from this area</span>
                       </button>
                     </li>
                   </ol>
@@ -47,6 +46,10 @@
                   <ol>
                     <li class="systems-list" v-for="connected_system in system.connected_systems" :key="connected_system.id">
                       {{ connected_system.name }}
+
+                      <button class="button is-small" @click="removeConnectedSystem(connected_system.name)" title="Remove this system from connected systems">
+                        <b-icon icon="trash"></b-icon>
+                      </button>
                     </li>
                   </ol>
                 </div>
@@ -126,6 +129,40 @@ export default {
       }).then(response => { this.system = response.data })
       // Finally empty the field
       this.newSystemName = ''
+    },
+    removeArea (areaAddress) {
+      axios({
+        method: 'put',
+        url: `http://localhost:8811/api/v1/systems/${this.$route.params.systemId}/`,
+        auth: {
+          username: 'admin',
+          password: 'admin'
+        },
+        data: {
+          name: this.system.name,
+          areas: [],
+          connected_systems: [],
+          unlinked_areas: [{address: areaAddress}],
+          unlinked_connected_systems: []
+        }
+      }).then(response => { this.system = response.data })
+    },
+    removeConnectedSystem (connectedSystemName) {
+      axios({
+        method: 'put',
+        url: `http://localhost:8811/api/v1/systems/${this.$route.params.systemId}/`,
+        auth: {
+          username: 'admin',
+          password: 'admin'
+        },
+        data: {
+          name: this.system.name,
+          areas: [],
+          connected_systems: [],
+          unlinked_areas: [],
+          unlinked_connected_systems: [{name: connectedSystemName}]
+        }
+      }).then(response => { this.system = response.data })
     }
   }
 }

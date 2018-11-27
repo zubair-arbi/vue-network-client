@@ -6,20 +6,22 @@
 
     <div class="columns">
       <div class="column is-half">
-        <h2 class="subtitle">Systems</h2>
+        <h2 class="subtitle">All Network Systems</h2>
 
         <div class="system">
-          <div class="card" v-for="system in systems"> <!-- Loop through the systems array, if status is 0 (to do) then we'll show it. -->
+          <div class="card" v-for="system in systems" :key="system.id"> <!-- Loop through the systems array, if status is 0 (to do) then we'll show it. -->
             <div class="card-content">
               <div class="content">
                 <h5 class="system-title" @click="systemDetail(system.id)" >{{ system.name }}</h5>
                 <div>
                   <b>Areas:</b>
-                  <span v-for="area in system.areas">{{ area.address }}, </span>
+                  <span v-for="area in system.areas" :key="area.id">{{ area.address }}, </span>
                 </div>
                 <div>
                   <b>Connected Systems:</b>
-                  <li v-for="connected_system in system.connected_systems">{{ connected_system.name }}</li>
+                  <li v-for="connected_system in system.connected_systems" :key="connected_system.id">
+                    {{ connected_system.name }}
+                  </li>
                 </div>
               </div>
             </div>
@@ -28,10 +30,10 @@
       </div>
 
       <div class="column is-half">
-        <h2 class="subtitle">Areas</h2>
+        <h2 class="subtitle">All Network Areas</h2>
 
         <div class="done">
-          <div class="card" v-for="area in areas"> <!-- Loop through the areas array, if status is 1 (done) then we'll show it. -->
+          <div class="card" v-for="area in areas" :key="area.id"> <!-- Loop through the areas array, if status is 1 (done) then we'll show it. -->
             <div class="card-content">
               <div class="content">
                 {{ area.address }}

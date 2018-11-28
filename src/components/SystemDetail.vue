@@ -120,7 +120,10 @@ export default {
           areas: [{'address': this.newAreaAddress}],
           connected_systems: []
         }
-      }).then(response => { this.system = response.data })
+      }).then((response) => {
+        this.system = response.data
+        this.drawNetworkTopology()
+      })
 
       // Finally empty the field
       this.newAreaAddress = ''
@@ -139,7 +142,10 @@ export default {
           areas: [],
           connected_systems: [{name: this.newSystemName}]
         }
-      }).then(response => { this.system = response.data })
+      }).then((response) => {
+        this.system = response.data
+        this.drawNetworkTopology()
+      })
       // Finally empty the field
       this.newSystemName = ''
     },
@@ -158,7 +164,10 @@ export default {
           unlinked_areas: [{address: areaAddress}],
           unlinked_connected_systems: []
         }
-      }).then(response => { this.system = response.data })
+      }).then((response) => {
+        this.system = response.data
+        this.drawNetworkTopology()
+      })
     },
     removeConnectedSystem (connectedSystemName) {
       axios({
@@ -175,7 +184,10 @@ export default {
           unlinked_areas: [],
           unlinked_connected_systems: [{name: connectedSystemName}]
         }
-      }).then(response => { this.system = response.data })
+      }).then((response) => {
+        this.system = response.data
+        this.drawNetworkTopology()
+      })
     },
     drawNetworkTopology () {
       var tempNetworkData = []
@@ -229,7 +241,8 @@ export default {
         edges: edges
       }
 
-      // initialize your network!
+      // Now initialize the Vis network topology
+      /* eslint-disable no-new */
       new vis.Network(
         document.getElementById('network-topology'), data, options
       )

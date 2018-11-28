@@ -62,6 +62,7 @@
       <div class="column is-half">
         <h2 class="subtitle">System Network Topology</h2>
 
+        <div id="network-topology"></div>
       </div>
     </div>
   </div>
@@ -69,13 +70,21 @@
 
 <script>
 import axios from 'axios'
+import vis from 'vis'
+
+// Below variables required for showing vis network topology
+var nodes = {}
+var edges = {}
+var data = {}
+var options = {}
 
 export default {
   name: 'SystemDetail',
   data () {
     return {
       system: {},
-      newAreaAddress: ''
+      newAreaAddress: '',
+      newSystemName: ''
     }
   },
   mounted () {
@@ -90,7 +99,11 @@ export default {
           username: 'admin',
           password: 'admin'
         }
-      }).then(response => { this.system = response.data })
+      // }).then(response => { this.system = response.data })
+      }).then((response) => {
+        this.system = response.data
+        this.drawNetworkTopology()
+      })
     },
     addNewArea () {
       if (this.newAreaAddress === '') return
@@ -163,6 +176,63 @@ export default {
           unlinked_connected_systems: [{name: connectedSystemName}]
         }
       }).then(response => { this.system = response.data })
+    },
+    drawNetworkTopology () {
+      var tempNetworkData = []
+      var tempNetworkEdgeData = []
+      var networkItemsCount = 0
+
+      // Add current system and make it edges with all areas and connected systems
+      tempNetworkData.push({
+        id: networkItemsCount,
+        label: 'Current System #' + this.system.name,
+        shape: 'star',
+        color: {background: 'coral'}
+      })
+      networkItemsCount += 1
+
+      this.system.areas.forEach(function (area) {
+        tempNetworkData.push({
+          id: networkItemsCount,
+          label: 'Area #' + area.address,
+          shape: 'circle',
+          color: {background: 'cornflowerblue'}
+        })
+        tempNetworkEdgeData.push({
+          from: 0,
+          to: networkItemsCount
+        })
+        networkItemsCount += 1
+      })
+
+      this.system.connected_systems.forEach(function (system) {
+        tempNetworkData.push({
+          id: networkItemsCount,
+          label: 'CS# ' + system.name,
+          shape: 'diamond',
+          color: {background: 'forestgreen'}
+        })
+        tempNetworkEdgeData.push({
+          from: 0,
+          to: networkItemsCount
+        })
+        networkItemsCount += 1
+      })
+      // create an array with network nodes
+      nodes = new vis.DataSet(tempNetworkData)
+      // create an array with network edges
+      edges = new vis.DataSet(tempNetworkEdgeData)
+
+      // provide the data in the vis format:
+      data = {
+        nodes: nodes,
+        edges: edges
+      }
+
+      // initialize your network!
+      new vis.Network(
+        document.getElementById('network-topology'), data, options
+      )
     }
   }
 }
@@ -176,7 +246,7 @@ export default {
     margin-bottom: 25px;
   }
   .areas-list {
-    color: blue;
+    color: cornflowerblue;
   }
 
   ol {
@@ -184,5 +254,12 @@ export default {
   }
   .systems-list {
     color: forestgreen;
+  }
+  #network-topology {
+    display: block;
+    width: 100%;
+    height: 600px;
+    border: solid;
+    background-color: white;
   }
 </style>

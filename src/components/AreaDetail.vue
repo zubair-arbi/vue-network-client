@@ -22,7 +22,7 @@
                   </section>
                   <ol>
                     <li class="systems-list" v-for="connected_system in area.connected_systems" :key="connected_system.id">
-                      {{ connected_system.name }}
+                      <router-link :to="{ name: 'systemDetail', params: { systemId: connected_system.id }}">{{ connected_system.name }}</router-link>
 
                       <button class="button is-small" @click="removeConnectedSystem(connected_system.name)" title="Remove this system from this area">
                         <b-icon icon="trash"></b-icon>
@@ -59,7 +59,7 @@ export default {
   name: 'SystemDetail',
   data () {
     return {
-      area: {},
+      area: { 'connected_systems': [] },
       newSystemName: ''
     }
   },
@@ -179,8 +179,11 @@ export default {
   ol {
     font-size: 20px;
   }
-  .systems-list {
+  .systems-list a {
     color: forestgreen;
+  }
+  .systems-list:hover a {
+    color: darkgreen;
   }
   #network-topology {
     display: block;

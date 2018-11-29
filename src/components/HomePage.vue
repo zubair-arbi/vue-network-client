@@ -6,7 +6,7 @@
 
     <div class="columns">
       <div class="column is-half">
-        <h2 class="subtitle">All Network Systems</h2>
+        <h2 class="subtitle">All Network Systems ({{ systems.length }})</h2>
 
         <div class="system">
           <div class="card" v-for="system in systems" :key="system.id"> <!-- Loop through the systems array, if status is 0 (to do) then we'll show it. -->
@@ -30,7 +30,7 @@
       </div>
 
       <div class="column is-half">
-        <h2 class="subtitle">All Network Areas</h2>
+        <h2 class="subtitle">All Network Areas ({{ areas.length }})</h2>
 
         <div class="done">
           <div class="card area-card" v-for="area in areas" :key="area.id"> <!-- Loop through the areas array, if status is 1 (done) then we'll show it. -->

@@ -26,7 +26,7 @@
                   </h5>
                   <ol id="areas-list">
                     <li class="areas-list" v-for="area in system.areas" :key="area.id">
-                      {{ area.address }}
+                      <router-link :to="{ name: 'areaDetail', params: { areaId: area.id }}">{{ area.address }}</router-link>
 
                       <button class="button is-small" @click="removeArea(area.address)" title="Remove current system from this area">
                         <b-icon icon="trash"></b-icon>
@@ -45,7 +45,7 @@
                   </section>
                   <ol>
                     <li class="systems-list" v-for="connected_system in system.connected_systems" :key="connected_system.id">
-                      {{ connected_system.name }}
+                      <router-link :to="{ name: 'systemDetail', params: { systemId: connected_system.id }}">{{ connected_system.name }}</router-link>
 
                       <button class="button is-small" @click="removeConnectedSystem(connected_system.name)" title="Remove this system from connected systems">
                         <b-icon icon="trash"></b-icon>
@@ -82,7 +82,7 @@ export default {
   name: 'SystemDetail',
   data () {
     return {
-      system: {},
+      system: { areas: [], connected_systems: [] },
       newAreaAddress: '',
       newSystemName: ''
     }
@@ -257,15 +257,21 @@ export default {
   .card { /* Adding some air under the tasks */
     margin-bottom: 25px;
   }
-  .areas-list {
+  .areas-list a {
     color: cornflowerblue;
+  }
+  .areas-list:hover a {
+    color: royalblue;
   }
 
   ol {
     font-size: 20px;
   }
-  .systems-list {
+  .systems-list a {
     color: forestgreen;
+  }
+  .systems-list:hover a {
+    color: darkgreen;
   }
   #network-topology {
     display: block;

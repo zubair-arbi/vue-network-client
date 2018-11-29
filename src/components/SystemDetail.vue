@@ -6,7 +6,7 @@
 
     <div class="columns">
       <div class="column is-half">
-        <h2 class="subtitle">{{ system.name }}</h2>
+        <h2 class="subtitle">System Name: {{ system.name }}</h2>
 
         <div class="system">
           <div class="card">
@@ -14,7 +14,7 @@
               <div class="content">
                 <div>
                   <h5>
-                    Areas:
+                    Areas: {{ system.areas.length }}
                     <section id="new-area-form" class="column">
                       <b-field>
                         <b-input v-model.number="newAreaAddress" placeholder="4004"></b-input>
@@ -36,7 +36,7 @@
                 </div>
                 <hr>
                 <div>
-                  <h5>Connected Systems:</h5>
+                  <h5>Connected Systems: {{ system.connected_systems.length }}</h5>
                   <section id="new-system-form" class="column">
                     <b-field>
                       <b-input v-model="newSystemName" placeholder="New-System-Name-401-1" width="200px"></b-input>
@@ -99,7 +99,6 @@ export default {
           username: 'admin',
           password: 'admin'
         }
-      // }).then(response => { this.system = response.data })
       }).then((response) => {
         this.system = response.data
         this.drawNetworkTopology()

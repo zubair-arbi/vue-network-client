@@ -33,10 +33,10 @@
         <h2 class="subtitle">All Network Areas</h2>
 
         <div class="done">
-          <div class="card" v-for="area in areas" :key="area.id"> <!-- Loop through the areas array, if status is 1 (done) then we'll show it. -->
+          <div class="card area-card" v-for="area in areas" :key="area.id"> <!-- Loop through the areas array, if status is 1 (done) then we'll show it. -->
             <div class="card-content">
               <div class="content">
-                {{ area.address }}
+                <p class="area-title" @click="areaDetail(area.id)" >{{ area.address }}</p>
               </div>
             </div>
           </div>
@@ -84,6 +84,9 @@ export default {
     },
     systemDetail (systemId) {
       this.$router.push({ name: 'systemDetail', params: { systemId: systemId } })
+    },
+    areaDetail (areaId) {
+      this.$router.push({ name: 'areaDetail', params: { areaId: areaId } })
     }
   }
 }
@@ -93,7 +96,6 @@ export default {
   .select, select { /* 100% width for the select */
     width: 100%;
   }
-
   .system-title {
     font-weight: bold;
     color: coral;
@@ -103,12 +105,16 @@ export default {
     TEXT-DECORATION: underline;
     cursor: pointer;
   }
-
+  .area-title {
+    font-weight: bold;
+    color: cornflowerblue;
+  }
+  .area-title:hover {
+    COLOR: royalblue;
+    TEXT-DECORATION: underline;
+    cursor: pointer;
+  }
   .card { /* Adding some air under the tasks */
     margin-bottom: 25px;
-  }
-
-  .done { /* Make the done tasks a little bit transparent */
-    opacity: 0.3;
   }
 </style>

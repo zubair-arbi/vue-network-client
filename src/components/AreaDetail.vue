@@ -184,6 +184,7 @@ export default {
       var tempNetworkEdgeData = []
       var networkItemsCount = 0
       var parentSystemIndex = 0
+      var nestedSystemLabel = ''
 
       // Add current area and make its edges with all areas and connected systems
       tempNetworkData.push({
@@ -203,22 +204,34 @@ export default {
         })
         tempNetworkEdgeData.push({
           from: 0,
-          to: networkItemsCount
+          to: networkItemsCount,
         })
         parentSystemIndex = networkItemsCount
 
         networkItemsCount += 1
         system.connected_systems.forEach(function (nestedSystem) {
-          tempNetworkData.push({
-            id: networkItemsCount,
-            label: 'CS# ' + nestedSystem.name,
-            shape: 'triangle',
-            color: {background: 'palevioletred'}
-          })
-          tempNetworkEdgeData.push({
-            from: parentSystemIndex,
-            to: networkItemsCount
-          })
+          nestedSystemLabel = 'CS# ' + nestedSystem.name
+          const duplicateNodeIndex = tempNetworkData.findIndex((node) => node.label === nestedSystemLabel)
+          console.log(duplicateNodeIndex)
+          console.log(tempNetworkData[duplicateNodeIndex])
+
+          if (duplicateNodeIndex === -1) {
+            tempNetworkData.push({
+              id: networkItemsCount,
+              label: 'CS# ' + nestedSystem.name,
+              shape: 'triangle',
+              color: {background: 'palevioletred'}
+            })
+            tempNetworkEdgeData.push({
+              from: parentSystemIndex,
+              to: networkItemsCount,
+            })
+          } else {
+            tempNetworkEdgeData.push({
+              from: parentSystemIndex,
+              to: tempNetworkData[duplicateNodeIndex].id,
+            })
+          }
           networkItemsCount += 1
         })
       })

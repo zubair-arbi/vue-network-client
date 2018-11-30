@@ -204,7 +204,7 @@ export default {
         })
         tempNetworkEdgeData.push({
           from: 0,
-          to: networkItemsCount,
+          to: networkItemsCount
         })
         parentSystemIndex = networkItemsCount
 
@@ -212,8 +212,6 @@ export default {
         system.connected_systems.forEach(function (nestedSystem) {
           nestedSystemLabel = 'CS# ' + nestedSystem.name
           const duplicateNodeIndex = tempNetworkData.findIndex((node) => node.label === nestedSystemLabel)
-          console.log(duplicateNodeIndex)
-          console.log(tempNetworkData[duplicateNodeIndex])
 
           if (duplicateNodeIndex === -1) {
             tempNetworkData.push({
@@ -224,12 +222,12 @@ export default {
             })
             tempNetworkEdgeData.push({
               from: parentSystemIndex,
-              to: networkItemsCount,
+              to: networkItemsCount
             })
           } else {
             tempNetworkEdgeData.push({
               from: parentSystemIndex,
-              to: tempNetworkData[duplicateNodeIndex].id,
+              to: tempNetworkData[duplicateNodeIndex].id
             })
           }
           networkItemsCount += 1

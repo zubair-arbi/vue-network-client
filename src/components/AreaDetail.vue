@@ -27,6 +27,22 @@
                       <button class="button is-small" @click="removeConnectedSystem(connected_system.name)" title="Remove this system from this area">
                         <b-icon icon="trash"></b-icon>
                       </button>
+                      <section id="new--nested-system-form" class="column">
+                        <b-field>
+                          <b-input v-model="newNestedSystemName" placeholder="New-Nested-System-Name-401-1" width="200px"></b-input>
+                        </b-field>
+                        <button class="button is-primary" @click="addNewNestedSystem(connected_system.name)">Add New Nested System</button>
+                      </section>
+
+                      <ol>
+                        <li class="nested-systems-list" v-for="nested_system in connected_system.connected_systems" :key="nested_system.id">
+                          <router-link :to="{ name: 'systemDetail', params: { systemId: nested_system.id }}">{{ nested_system.name }}</router-link>
+
+                          <button class="button is-small" @click="removeNestedSystem(connected_system.name, nested_system.name)" title="Remove this nested system from this parent system">
+                            <b-icon icon="trash-alt"></b-icon>
+                          </button>
+                        </li>
+                      </ol>
                     </li>
                   </ol>
                 </div>
@@ -60,7 +76,8 @@ export default {
   data () {
     return {
       area: { 'connected_systems': [] },
-      newSystemName: ''
+      newSystemName: '',
+      newNestedSystemName: ''
     }
   },
   mounted () {
@@ -121,10 +138,52 @@ export default {
         this.drawNetworkTopology()
       })
     },
+    addNewNestedSystem (parentSystemName) {
+      if (this.newNestedSystemName === '') return
+      axios({
+        method: 'put',
+        url: `http://localhost:8811/api/v1/areas/${this.$route.params.areaId}/`,
+        auth: {
+          username: 'admin',
+          password: 'admin'
+        },
+        data: {
+          address: this.area.address,
+          areas: [],
+          connected_systems: [],
+          nested_systems: [{parent_system: parentSystemName, name: this.newNestedSystemName}]
+        }
+      }).then((response) => {
+        this.area = response.data
+        this.drawNetworkTopology()
+      })
+      // Finally empty the field
+      this.newNestedSystemName = ''
+    },
+    removeNestedSystem (parentSystemName, childSystemName) {
+      axios({
+        method: 'put',
+        url: `http://localhost:8811/api/v1/areas/${this.$route.params.areaId}/`,
+        auth: {
+          username: 'admin',
+          password: 'admin'
+        },
+        data: {
+          address: this.area.address,
+          areas: [],
+          connected_systems: [],
+          unlinked_nested_systems: [{parent_system: parentSystemName, name: childSystemName}]
+        }
+      }).then((response) => {
+        this.area = response.data
+        this.drawNetworkTopology()
+      })
+    },
     drawNetworkTopology () {
       var tempNetworkData = []
       var tempNetworkEdgeData = []
       var networkItemsCount = 0
+      var parentSystemIndex = 0
 
       // Add current area and make its edges with all areas and connected systems
       tempNetworkData.push({
@@ -146,7 +205,22 @@ export default {
           from: 0,
           to: networkItemsCount
         })
+        parentSystemIndex = networkItemsCount
+
         networkItemsCount += 1
+        system.connected_systems.forEach(function (nestedSystem) {
+          tempNetworkData.push({
+            id: networkItemsCount,
+            label: 'CS# ' + nestedSystem.name,
+            shape: 'triangle',
+            color: {background: 'palevioletred'}
+          })
+          tempNetworkEdgeData.push({
+            from: parentSystemIndex,
+            to: networkItemsCount
+          })
+          networkItemsCount += 1
+        })
       })
       // create an array with network nodes
       nodes = new vis.DataSet(tempNetworkData)
@@ -184,6 +258,12 @@ export default {
   }
   .systems-list:hover a {
     color: darkgreen;
+  }
+  .nested-systems-list a {
+    color: palevioletred !important;
+  }
+  .nested-systems-list:hover a {
+    color: deeppink !important;
   }
   #network-topology {
     display: block;

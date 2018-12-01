@@ -87,11 +87,8 @@ export default {
     getAreaDetail () {
       axios({
         method: 'get',
-        url: `http://localhost:8811/api/v1/areas/${this.$route.params.areaId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        }
+        url: process.env.NETWORK_AREAS_API + `${this.$route.params.areaId}/`,
+        auth: process.env.NETWORK_API_AUTH
       }).then((response) => {
         this.area = response.data
         this.drawNetworkTopology()
@@ -101,11 +98,8 @@ export default {
       if (this.newSystemName === '') return
       axios({
         method: 'put',
-        url: `http://localhost:8811/api/v1/areas/${this.$route.params.areaId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        },
+        url: process.env.NETWORK_AREAS_API + `${this.$route.params.areaId}/`,
+        auth: process.env.NETWORK_API_AUTH,
         data: {
           address: this.area.address,
           areas: [],
@@ -121,11 +115,8 @@ export default {
     removeConnectedSystem (connectedSystemName) {
       axios({
         method: 'put',
-        url: `http://localhost:8811/api/v1/areas/${this.$route.params.areaId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        },
+        url: process.env.NETWORK_AREAS_API + `${this.$route.params.areaId}/`,
+        auth: process.env.NETWORK_API_AUTH,
         data: {
           address: this.area.address,
           areas: [],
@@ -142,11 +133,8 @@ export default {
       if (this.newNestedSystemName === '') return
       axios({
         method: 'put',
-        url: `http://localhost:8811/api/v1/areas/${this.$route.params.areaId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        },
+        url: process.env.NETWORK_AREAS_API + `${this.$route.params.areaId}/`,
+        auth: process.env.NETWORK_API_AUTH,
         data: {
           address: this.area.address,
           areas: [],
@@ -163,11 +151,8 @@ export default {
     removeNestedSystem (parentSystemName, childSystemName) {
       axios({
         method: 'put',
-        url: `http://localhost:8811/api/v1/areas/${this.$route.params.areaId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        },
+        url: process.env.NETWORK_AREAS_API + `${this.$route.params.areaId}/`,
+        auth: process.env.NETWORK_API_AUTH,
         data: {
           address: this.area.address,
           areas: [],

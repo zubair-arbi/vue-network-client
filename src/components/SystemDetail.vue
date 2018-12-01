@@ -94,11 +94,8 @@ export default {
     getSystemDetail () {
       axios({
         method: 'get',
-        url: `http://localhost:8811/api/v1/systems/${this.$route.params.systemId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        }
+        url: process.env.NETWORK_SYSTEMS_API + `${this.$route.params.systemId}/`,
+        auth: process.env.NETWORK_API_AUTH
       }).then((response) => {
         this.system = response.data
         this.drawNetworkTopology()
@@ -109,11 +106,8 @@ export default {
       if (Number(this.newAreaAddress) < 1) return
       axios({
         method: 'put',
-        url: `http://localhost:8811/api/v1/systems/${this.$route.params.systemId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        },
+        url: process.env.NETWORK_SYSTEMS_API + `${this.$route.params.systemId}/`,
+        auth: process.env.NETWORK_API_AUTH,
         data: {
           name: this.system.name,
           areas: [{'address': this.newAreaAddress}],
@@ -131,11 +125,8 @@ export default {
       if (this.newSystemName === '') return
       axios({
         method: 'put',
-        url: `http://localhost:8811/api/v1/systems/${this.$route.params.systemId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        },
+        url: process.env.NETWORK_SYSTEMS_API + `${this.$route.params.systemId}/`,
+        auth: process.env.NETWORK_API_AUTH,
         data: {
           name: this.system.name,
           areas: [],
@@ -151,11 +142,8 @@ export default {
     removeArea (areaAddress) {
       axios({
         method: 'put',
-        url: `http://localhost:8811/api/v1/systems/${this.$route.params.systemId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        },
+        url: process.env.NETWORK_SYSTEMS_API + `${this.$route.params.systemId}/`,
+        auth: process.env.NETWORK_API_AUTH,
         data: {
           name: this.system.name,
           areas: [],
@@ -171,11 +159,8 @@ export default {
     removeConnectedSystem (connectedSystemName) {
       axios({
         method: 'put',
-        url: `http://localhost:8811/api/v1/systems/${this.$route.params.systemId}/`,
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        },
+        url: process.env.NETWORK_SYSTEMS_API + `${this.$route.params.systemId}/`,
+        auth: process.env.NETWORK_API_AUTH,
         data: {
           name: this.system.name,
           areas: [],

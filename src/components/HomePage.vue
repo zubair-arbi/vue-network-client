@@ -65,21 +65,15 @@ export default {
     getAreas () {
       axios({
         method: 'get',
-        url: 'http://localhost:8811/api/v1/areas/',
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        }
+        url: process.env.NETWORK_AREAS_API,
+        auth: process.env.NETWORK_API_AUTH
       }).then(response => { this.areas = response.data })
     },
     getSystems () {
       axios({
         method: 'get',
-        url: 'http://localhost:8811/api/v1/systems/',
-        auth: {
-          username: 'admin',
-          password: 'admin'
-        }
+        url: process.env.NETWORK_SYSTEMS_API,
+        auth: process.env.NETWORK_API_AUTH
       }).then(response => { this.systems = response.data })
     },
     systemDetail (systemId) {
